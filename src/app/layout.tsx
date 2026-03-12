@@ -20,6 +20,21 @@ export default function RootLayout({
   return (
     <html lang="en">
       <body className={`${inter.variable} antialiased`}>
+        <script
+          dangerouslySetInnerHTML={{
+            __html: `
+              (function() {
+                var nav = performance.getEntriesByType("navigation")[0];
+                if (nav && nav.type === "reload") {
+                  localStorage.removeItem("connectedIntegrations");
+                  if (window.location.pathname !== "/") {
+                    window.location.replace("/");
+                  }
+                }
+              })();
+            `,
+          }}
+        />
         {children}
       </body>
     </html>
