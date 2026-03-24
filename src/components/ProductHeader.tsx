@@ -3,6 +3,7 @@
 import { useState, useEffect } from "react";
 import Image from "next/image";
 import Link from "next/link";
+import ConnectModal from "@/components/ConnectModal";
 
 type ProductHeaderProps = {
   id: string;
@@ -22,6 +23,7 @@ export default function ProductHeader({
   isCustom,
 }: ProductHeaderProps) {
   const [isConnected, setIsConnected] = useState(false);
+  const [showModal, setShowModal] = useState(false);
 
   useEffect(() => {
     const connected = JSON.parse(localStorage.getItem("connectedIntegrations") || "[]");
@@ -29,12 +31,21 @@ export default function ProductHeader({
   }, [id]);
 
   function handleConnect() {
+    if (id === "mailchimp") {
+      setShowModal(true);
+      return;
+    }
+    completeConnect();
+  }
+
+  function completeConnect() {
     const connected = JSON.parse(localStorage.getItem("connectedIntegrations") || "[]");
     if (!connected.includes(id)) {
       connected.push(id);
       localStorage.setItem("connectedIntegrations", JSON.stringify(connected));
     }
     setIsConnected(true);
+    setShowModal(false);
   }
 
   return (
@@ -115,6 +126,15 @@ export default function ProductHeader({
           )}
         </div>
       </div>
+
+      {showModal && (
+        <ConnectModal
+          integrationName={name}
+          integrationLogo={logoImage}
+          onClose={() => setShowModal(false)}
+          onConnect={completeConnect}
+        />
+      )}
     </section>
   );
 }
