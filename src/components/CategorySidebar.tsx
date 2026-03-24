@@ -5,14 +5,21 @@ import { categories } from "@/data/integrations";
 type CategorySidebarProps = {
   selected: string;
   onSelect: (category: string) => void;
+  activeCount?: number;
 };
 
-export default function CategorySidebar({ selected, onSelect }: CategorySidebarProps) {
+export default function CategorySidebar({ selected, onSelect, activeCount = 0 }: CategorySidebarProps) {
+  const allCategories = [
+    categories[0],
+    { name: "Active", count: activeCount },
+    ...categories.slice(1),
+  ];
+
   return (
     <div className="shrink-0">
       <h2 className="py-0.5 text-base font-bold text-[#212731]">Categories</h2>
       <div className="mt-3.5 flex w-[184px] flex-col">
-        {categories.map((cat) => {
+        {allCategories.map((cat) => {
           const isActive = selected === cat.name;
           return (
             <button

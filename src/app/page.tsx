@@ -39,11 +39,13 @@ export default function Home() {
   const hero = heroContent[selectedCategory] || heroContent["default"];
 
   const categoryFiltered =
-    selectedCategory === "All" || isCustom
-      ? integrations
-      : selectedCategory === "Featured"
-        ? integrations.filter((i) => i.featured)
-        : integrations.filter((i) => i.category === selectedCategory);
+    selectedCategory === "Active"
+      ? integrations.filter((i) => connectedIds.includes(i.id))
+      : selectedCategory === "All" || isCustom
+        ? integrations
+        : selectedCategory === "Featured"
+          ? integrations.filter((i) => i.featured)
+          : integrations.filter((i) => i.category === selectedCategory);
 
   const filteredIntegrations = searchQuery
     ? categoryFiltered.filter((i) =>
@@ -86,6 +88,7 @@ export default function Home() {
             setSelectedCategory(cat);
             setCurrentPage(1);
           }}
+          activeCount={connectedIds.length}
         />
 
         {/* Content Area */}
