@@ -70,7 +70,7 @@ export const integrations: Integration[] = [
   {
     id: "secure-24",
     name: "Secure 24",
-    category: "Insurance",
+    category: "Security",
     description:
       "Secure 24 is an authorized ADT dealer that pays inspectors $200 for every successful installation.",
     logo: "/images/b83e12d8-3505-4b89-8fda-74e9ad741663.png",
@@ -87,7 +87,7 @@ export const integrations: Integration[] = [
   },
   {
     id: "inspector-call-center",
-    name: "Inspector Call Center",
+    name: "America's Call Center",
     category: "Call center",
     description:
       "Inspector Call Center is a call center that helps home inspectors get inspections scheduled every time.",
