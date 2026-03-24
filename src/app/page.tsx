@@ -155,22 +155,6 @@ export default function Home() {
                       />
                     </svg>
                   </button>
-                  <button className="flex items-center gap-1 rounded border border-[#d1d5db] px-4 py-3 text-sm font-semibold text-[#374151]">
-                    Cost
-                    <svg
-                      width="12"
-                      height="12"
-                      viewBox="0 0 12 12"
-                      fill="none"
-                    >
-                      <path
-                        d="M3 5l3 3 3-3"
-                        stroke="#374151"
-                        strokeWidth="1.5"
-                        strokeLinecap="round"
-                      />
-                    </svg>
-                  </button>
                 </div>
                 <span className="text-xs font-medium text-[#647382]">
                   {Math.min((currentPage - 1) * 15 + 1, filteredIntegrations.length)}-{Math.min(currentPage * 15, filteredIntegrations.length)} of {filteredIntegrations.length} results
