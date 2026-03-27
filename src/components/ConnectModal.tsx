@@ -499,6 +499,393 @@ function StepConfigure({
   );
 }
 
+/* ─── Step 3: Configure Zoho CRM ─── */
+function StepConfigureZoho({
+  integrationName,
+  integrationLogo,
+  onConnect,
+  onBack,
+}: {
+  integrationName: string;
+  integrationLogo: string;
+  onConnect: () => void;
+  onBack: () => void;
+}) {
+  const [syncClients, setSyncClients] = useState(true);
+  const [syncAgents, setSyncAgents] = useState(true);
+  const [syncInspections, setSyncInspections] = useState(true);
+  const [clientModule, setClientModule] = useState("contacts");
+  const [clientModuleOpen, setClientModuleOpen] = useState(false);
+  const [agentModule, setAgentModule] = useState("accounts");
+  const [agentModuleOpen, setAgentModuleOpen] = useState(false);
+  const [pipeline, setPipeline] = useState("inspection-pipeline");
+  const [pipelineOpen, setPipelineOpen] = useState(false);
+  const [createDeals, setCreateDeals] = useState(true);
+  const [syncPayments, setSyncPayments] = useState(true);
+  const [syncActivities, setSyncActivities] = useState(true);
+
+  const clientModules = [
+    { id: "contacts", name: "Contacts" },
+    { id: "leads", name: "Leads" },
+  ];
+
+  const agentModules = [
+    { id: "accounts", name: "Accounts (by brokerage)" },
+    { id: "contacts", name: "Contacts (with role tag)" },
+  ];
+
+  const pipelines = [
+    { id: "inspection-pipeline", name: "Inspection Pipeline (new)" },
+    { id: "default", name: "Default Pipeline" },
+  ];
+
+  const stageMapping = [
+    { spectora: "Requested", zoho: "Requested", probability: "10%" },
+    { spectora: "Scheduled", zoho: "Scheduled", probability: "50%" },
+    { spectora: "In Progress", zoho: "In Progress", probability: "70%" },
+    { spectora: "Report Pending", zoho: "Report Pending", probability: "80%" },
+    { spectora: "Report Delivered", zoho: "Report Delivered", probability: "90%" },
+    { spectora: "Paid", zoho: "Closed Won", probability: "100%" },
+    { spectora: "Cancelled", zoho: "Closed Lost", probability: "0%" },
+  ];
+
+  const fieldMappings = [
+    { spectora: "Client Name", zoho: "First_Name / Last_Name", required: true },
+    { spectora: "Client Email", zoho: "Email", required: true },
+    { spectora: "Client Phone", zoho: "Phone", required: false },
+    { spectora: "Property Address", zoho: "Mailing_Street, City, State, Zip", required: false },
+    { spectora: "Inspection Fee", zoho: "Deal → Amount", required: false },
+    { spectora: "Services", zoho: "Deal → Inspection_Services", required: false },
+    { spectora: "Inspector Name", zoho: "Deal → Assigned_Inspector", required: false },
+    { spectora: "Report URL", zoho: "Deal → Report_URL", required: false },
+    { spectora: "Payment Status", zoho: "Deal → Payment_Status", required: false },
+  ];
+
+  function CustomSelect({
+    label,
+    value,
+    options,
+    open,
+    onToggle,
+    onSelect,
+  }: {
+    label: string;
+    value: string;
+    options: { id: string; name: string }[];
+    open: boolean;
+    onToggle: () => void;
+    onSelect: (id: string) => void;
+  }) {
+    return (
+      <div className="flex flex-col gap-2">
+        <label className="text-sm font-semibold text-[#212731]">{label}</label>
+        <div className="relative">
+          <button
+            type="button"
+            onClick={onToggle}
+            className="flex h-[44px] w-full items-center justify-between rounded border border-[#d1d5db] bg-white px-3 text-left text-base leading-7 text-[#212731] outline-none focus:border-[#1771b8]"
+          >
+            <span>{options.find((o) => o.id === value)?.name}</span>
+            <svg
+              width="20"
+              height="20"
+              viewBox="0 0 20 20"
+              fill="none"
+              className={`text-[#647382] transition-transform ${open ? "rotate-180" : ""}`}
+            >
+              <path d="M5 7.5l5 5 5-5" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" />
+            </svg>
+          </button>
+          {open && (
+            <div className="absolute left-0 top-[48px] z-10 w-full rounded border border-[#d1d5db] bg-white shadow-lg">
+              {options.map((o) => (
+                <button
+                  key={o.id}
+                  type="button"
+                  onClick={() => onSelect(o.id)}
+                  className={`flex w-full px-3 py-2.5 text-left text-sm text-[#212731] hover:bg-[#f6f9f9] ${o.id === value ? "bg-[#f6f9f9]" : ""}`}
+                >
+                  {o.name}
+                </button>
+              ))}
+            </div>
+          )}
+        </div>
+      </div>
+    );
+  }
+
+  return (
+    <div className="flex w-[600px] flex-col items-center gap-5">
+      <LogoPair integrationLogo={integrationLogo} integrationName={integrationName} />
+
+      <div className="flex w-full flex-col gap-8">
+        <div className="flex flex-col gap-2">
+          <h2 className="text-2xl font-bold leading-[1.4] text-[#212731]">
+            Configure your integration
+          </h2>
+          <p className="text-sm leading-6 text-[#374151]">
+            Choose what Spectora data syncs to {integrationName} and how it maps to your CRM modules.
+          </p>
+        </div>
+
+        {/* Data to sync */}
+        <div className="flex flex-col gap-3">
+          <label className="text-sm font-semibold text-[#212731]">
+            Spectora data to sync
+          </label>
+          <p className="text-xs leading-5 text-[#647382]">
+            Select which Spectora records are pushed to {integrationName}.
+          </p>
+          <div className="flex gap-6">
+            <label className="flex cursor-pointer gap-3 items-start">
+              <div className="pt-1 shrink-0">
+                <button
+                  type="button"
+                  onClick={() => setSyncClients(!syncClients)}
+                  className={`flex h-4 w-4 items-center justify-center rounded ${syncClients ? "bg-[#1771b8]" : "border border-[#d1d5db] bg-white"}`}
+                >
+                  {syncClients && (
+                    <svg width="9" height="7" viewBox="0 0 9 7" fill="none">
+                      <path d="M1 3.5L3.5 6L8 1" stroke="white" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" />
+                    </svg>
+                  )}
+                </button>
+              </div>
+              <div className="flex flex-col">
+                <p className="pb-1 pt-1 text-sm font-semibold text-[#212731]">Clients</p>
+                <p className="text-xs leading-5 text-[#647382]">Homebuyers &amp; homeowners</p>
+              </div>
+            </label>
+            <label className="flex cursor-pointer gap-3 items-start">
+              <div className="pt-1 shrink-0">
+                <button
+                  type="button"
+                  onClick={() => setSyncAgents(!syncAgents)}
+                  className={`flex h-4 w-4 items-center justify-center rounded ${syncAgents ? "bg-[#1771b8]" : "border border-[#d1d5db] bg-white"}`}
+                >
+                  {syncAgents && (
+                    <svg width="9" height="7" viewBox="0 0 9 7" fill="none">
+                      <path d="M1 3.5L3.5 6L8 1" stroke="white" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" />
+                    </svg>
+                  )}
+                </button>
+              </div>
+              <div className="flex flex-col">
+                <p className="pb-1 pt-1 text-sm font-semibold text-[#212731]">Agents</p>
+                <p className="text-xs leading-5 text-[#647382]">Real estate agents</p>
+              </div>
+            </label>
+            <label className="flex cursor-pointer gap-3 items-start">
+              <div className="pt-1 shrink-0">
+                <button
+                  type="button"
+                  onClick={() => setSyncInspections(!syncInspections)}
+                  className={`flex h-4 w-4 items-center justify-center rounded ${syncInspections ? "bg-[#1771b8]" : "border border-[#d1d5db] bg-white"}`}
+                >
+                  {syncInspections && (
+                    <svg width="9" height="7" viewBox="0 0 9 7" fill="none">
+                      <path d="M1 3.5L3.5 6L8 1" stroke="white" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" />
+                    </svg>
+                  )}
+                </button>
+              </div>
+              <div className="flex flex-col">
+                <p className="pb-1 pt-1 text-sm font-semibold text-[#212731]">Inspections</p>
+                <p className="text-xs leading-5 text-[#647382]">As CRM Deals</p>
+              </div>
+            </label>
+          </div>
+        </div>
+
+        <div className="border-t border-[#d1d5db]" />
+
+        {/* Module mapping */}
+        <div className="flex flex-col gap-5">
+          <div className="flex flex-col gap-1">
+            <label className="text-sm font-semibold text-[#212731]">CRM module mapping</label>
+            <p className="text-xs leading-5 text-[#647382]">
+              Choose where each Spectora record type is created in {integrationName}.
+            </p>
+          </div>
+
+          {syncClients && (
+            <CustomSelect
+              label="Clients sync to"
+              value={clientModule}
+              options={clientModules}
+              open={clientModuleOpen}
+              onToggle={() => { setClientModuleOpen(!clientModuleOpen); setAgentModuleOpen(false); setPipelineOpen(false); }}
+              onSelect={(id) => { setClientModule(id); setClientModuleOpen(false); }}
+            />
+          )}
+
+          {syncAgents && (
+            <CustomSelect
+              label="Agents sync to"
+              value={agentModule}
+              options={agentModules}
+              open={agentModuleOpen}
+              onToggle={() => { setAgentModuleOpen(!agentModuleOpen); setClientModuleOpen(false); setPipelineOpen(false); }}
+              onSelect={(id) => { setAgentModule(id); setAgentModuleOpen(false); }}
+            />
+          )}
+
+          {syncInspections && (
+            <CustomSelect
+              label="Inspections pipeline"
+              value={pipeline}
+              options={pipelines}
+              open={pipelineOpen}
+              onToggle={() => { setPipelineOpen(!pipelineOpen); setClientModuleOpen(false); setAgentModuleOpen(false); }}
+              onSelect={(id) => { setPipeline(id); setPipelineOpen(false); }}
+            />
+          )}
+        </div>
+
+        {/* Stage mapping */}
+        {syncInspections && (
+          <>
+            <div className="border-t border-[#d1d5db]" />
+
+            <div className="flex flex-col gap-2">
+              <label className="text-sm font-semibold text-[#212731]">Deal stage mapping</label>
+              <p className="text-xs leading-5 text-[#647382]">
+                Inspection statuses in Spectora map to these Deal stages in {integrationName}.
+              </p>
+              <div className="overflow-hidden rounded border border-[#d1d5db]">
+                <div className="flex items-center bg-[#f6f9f9] px-4 py-2.5 text-xs font-semibold text-[#647382]">
+                  <span className="flex-1">Spectora Status</span>
+                  <span className="w-6 text-center">→</span>
+                  <span className="flex-1">Zoho CRM Stage</span>
+                  <span className="w-16 text-right">Probability</span>
+                </div>
+                {stageMapping.map((stage) => (
+                  <div
+                    key={stage.spectora}
+                    className="flex items-center border-t border-[#d1d5db] px-4 py-2 text-sm"
+                  >
+                    <span className="flex-1 text-[#212731]">{stage.spectora}</span>
+                    <span className="w-6 text-center text-[#d1d5db]">→</span>
+                    <span className="flex-1 text-[#647382]">{stage.zoho}</span>
+                    <span className="w-16 text-right font-mono text-xs text-[#647382]">{stage.probability}</span>
+                  </div>
+                ))}
+              </div>
+            </div>
+          </>
+        )}
+
+        <div className="border-t border-[#d1d5db]" />
+
+        {/* Automation toggles */}
+        <div className="flex flex-col gap-5">
+          <div className="flex flex-col gap-1">
+            <label className="text-sm font-semibold text-[#212731]">Automation</label>
+            <p className="text-xs leading-5 text-[#647382]">
+              Configure what happens automatically when data changes in Spectora.
+            </p>
+          </div>
+
+          <div className="flex items-center justify-between">
+            <div>
+              <p className="text-sm font-semibold text-[#212731]">Create Deals for new inspections</p>
+              <p className="text-xs text-[#647382]">
+                Automatically create a Deal when a new inspection is booked in Spectora
+              </p>
+            </div>
+            <button
+              onClick={() => setCreateDeals(!createDeals)}
+              className={`relative h-6 w-11 shrink-0 rounded-full transition-colors ${createDeals ? "bg-[#1771b8]" : "bg-[#d1d5db]"}`}
+            >
+              <span className={`absolute top-0.5 h-5 w-5 rounded-full bg-white shadow transition-transform ${createDeals ? "left-[22px]" : "left-0.5"}`} />
+            </button>
+          </div>
+
+          <div className="flex items-center justify-between">
+            <div>
+              <p className="text-sm font-semibold text-[#212731]">Sync payment status</p>
+              <p className="text-xs text-[#647382]">
+                Update Deal amount and payment status when payments are recorded
+              </p>
+            </div>
+            <button
+              onClick={() => setSyncPayments(!syncPayments)}
+              className={`relative h-6 w-11 shrink-0 rounded-full transition-colors ${syncPayments ? "bg-[#1771b8]" : "bg-[#d1d5db]"}`}
+            >
+              <span className={`absolute top-0.5 h-5 w-5 rounded-full bg-white shadow transition-transform ${syncPayments ? "left-[22px]" : "left-0.5"}`} />
+            </button>
+          </div>
+
+          <div className="flex items-center justify-between">
+            <div>
+              <p className="text-sm font-semibold text-[#212731]">Create calendar activities</p>
+              <p className="text-xs text-[#647382]">
+                Add CRM Events for scheduled inspections and Tasks for follow-ups
+              </p>
+            </div>
+            <button
+              onClick={() => setSyncActivities(!syncActivities)}
+              className={`relative h-6 w-11 shrink-0 rounded-full transition-colors ${syncActivities ? "bg-[#1771b8]" : "bg-[#d1d5db]"}`}
+            >
+              <span className={`absolute top-0.5 h-5 w-5 rounded-full bg-white shadow transition-transform ${syncActivities ? "left-[22px]" : "left-0.5"}`} />
+            </button>
+          </div>
+        </div>
+
+        <div className="border-t border-[#d1d5db]" />
+
+        {/* Field mapping */}
+        <div className="flex flex-col gap-2">
+          <label className="text-sm font-semibold text-[#212731]">Field mapping</label>
+          <p className="text-xs leading-5 text-[#647382]">
+            Spectora fields are mapped to {integrationName} fields. Sync is one-way (Spectora → {integrationName}).
+          </p>
+          <div className="overflow-hidden rounded border border-[#d1d5db]">
+            <div className="flex items-center bg-[#f6f9f9] px-4 py-2.5 text-xs font-semibold text-[#647382]">
+              <span className="flex-1">Spectora Field</span>
+              <span className="w-6 text-center">→</span>
+              <span className="flex-1">{integrationName} Field</span>
+            </div>
+            {fieldMappings.map((field) => (
+              <div
+                key={field.zoho}
+                className="flex items-center border-t border-[#d1d5db] px-4 py-2.5 text-sm"
+              >
+                <span className="flex flex-1 items-center gap-1.5 text-[#212731]">
+                  {field.spectora}
+                  {field.required && (
+                    <span className="text-[10px] font-medium text-[#1771b8]">Required</span>
+                  )}
+                </span>
+                <span className="w-6 text-center text-[#d1d5db]">→</span>
+                <span className="flex-1 font-mono text-xs text-[#647382]">{field.zoho}</span>
+              </div>
+            ))}
+          </div>
+        </div>
+
+        {/* Actions */}
+        <div className="flex items-center gap-5">
+          <button
+            onClick={onConnect}
+            disabled={!syncClients && !syncAgents && !syncInspections}
+            className="min-w-[80px] rounded bg-[#1771b8] px-4 py-3 text-sm font-semibold text-white hover:bg-[#125e96] disabled:opacity-40"
+          >
+            Connect Integration
+          </button>
+          <button
+            onClick={onBack}
+            className="px-4 py-3 text-sm font-semibold text-[#1771b8] hover:underline"
+          >
+            Back
+          </button>
+        </div>
+      </div>
+    </div>
+  );
+}
+
 /* ─── Main Modal ─── */
 export default function ConnectModal({
   integrationName,
@@ -507,6 +894,7 @@ export default function ConnectModal({
   onConnect,
 }: ConnectModalProps) {
   const [step, setStep] = useState(1);
+  const isZoho = integrationName === "Zoho CRM";
 
   return (
     <div className="fixed inset-0 z-50 flex flex-col bg-white">
@@ -528,7 +916,15 @@ export default function ConnectModal({
             onClose={onClose}
           />
         )}
-        {step === 3 && (
+        {step === 3 && isZoho && (
+          <StepConfigureZoho
+            integrationName={integrationName}
+            integrationLogo={integrationLogo}
+            onConnect={onConnect}
+            onBack={() => setStep(2)}
+          />
+        )}
+        {step === 3 && !isZoho && (
           <StepConfigure
             integrationName={integrationName}
             integrationLogo={integrationLogo}

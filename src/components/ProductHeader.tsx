@@ -31,7 +31,7 @@ export default function ProductHeader({
   }, [id]);
 
   function handleConnect() {
-    if (id === "mailchimp") {
+    if (id === "mailchimp" || id === "zoho-crm") {
       setShowModal(true);
       return;
     }

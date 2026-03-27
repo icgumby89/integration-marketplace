@@ -260,4 +260,48 @@ export const integrationDetails: Record<string, IntegrationDetail> = {
       "Access communication history",
     ],
   },
+  "zoho-crm": {
+    id: "zoho-crm",
+    name: "Zoho CRM",
+    category: "CRM",
+    description:
+      "Zoho CRM is a comprehensive CRM platform designed to manage sales pipelines and customer data effectively.",
+    logoImage: "/images/c99481f7-b26b-4506-b1d6-304b415d78cb.png",
+    logoBg: "#ffffff",
+    builtBy: "Zoho CRM",
+    pricing: "Paid",
+    supportUrl: "#",
+    resourceLinks: [
+      { label: "Company Website", url: "#" },
+      { label: "Documentation", url: "#" },
+    ],
+    basedIn: { country: "USA", flag: "🇺🇸" },
+    features: [
+      {
+        title: "Track Your Sales Pipeline in Real-Time",
+        description:
+          "Monitor every deal from first contact to close with Zoho CRM's intuitive sales dashboard. Visualize opportunity stages, forecast revenue, and track team performance through customizable views and real-time updates. This centralized approach gives you complete visibility into your sales process, helps you identify bottlenecks before they impact revenue, and ensures your team stays focused on high-priority opportunities. Whether you're managing a handful of deals or hundreds of accounts, Zoho CRM provides the clarity and control you need to drive consistent growth and hit your sales targets.",
+        image: "/images/zoho-feature-pipeline.png",
+        imageBg: "white",
+        logoOverlay: "/images/zoho-logo-wide.png",
+      },
+      {
+        title: "Get a Complete View of Every Lead and Customer",
+        description:
+          "Access all the information you need about your contacts in one organized profile with Zoho CRM's comprehensive CRM. View contact details, communication history, related opportunities, and recent activity through an intuitive, easy-to-navigate interface. The streamlined layout makes it simple to log calls and meetings, track engagement over time, assign follow-up tasks, and see exactly where each lead stands in your pipeline. Customize fields to capture information specific to your business, add detailed notes for team collaboration, preview interaction timelines across channels, and maintain the complete context your team needs to build lasting customer relationships.",
+        image: "/images/zoho-feature-contacts.png",
+        imageBg: "#faf9f8",
+      },
+    ],
+    about:
+      "Zoho CRM is a leading customer relationship management (CRM) platform that helps businesses manage sales processes and build lasting customer relationships. The platform specializes in sales pipeline management, enabling companies to track leads, manage opportunities, and close deals using powerful automation and customizable workflows. Zoho CRM offers intelligent sales tools that provide real-time insights into customer interactions and buying behavior. Beyond sales, users can manage customer service, marketing campaigns, and business analytics all within the same ecosystem.\n\nThe company provides comprehensive reporting and dashboards to track performance, forecast revenue, and measure team productivity. With thousands of integrations, AI-powered features, and flexible deployment options, Zoho CRM serves businesses of all sizes across industries worldwide.",
+    permissions: [
+      "Access contact and account information",
+      "Log activities and track interactions",
+      "Read and update opportunity data",
+      "Sync lead and customer records",
+      "View sales pipeline and forecasts",
+      "Access communication history",
+    ],
+  },
 };
