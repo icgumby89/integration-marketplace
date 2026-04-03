@@ -491,7 +491,7 @@ function StepConfigure({
           <button
             onClick={onConnect}
             disabled={!syncClients && !syncAgents}
-            className="min-w-[80px] rounded bg-[#1771b8] px-4 py-3 text-sm font-semibold text-white hover:bg-[#125e96] disabled:opacity-40"
+            className="min-w-[80px] rounded bg-[#1771b8] px-4 py-3 text-sm font-semibold text-white hover:bg-[#125e96] disabled:bg-[#EBEDEF] disabled:text-[#9AA5B1] disabled:hover:bg-[#EBEDEF]"
           >
             Connect Integration
           </button>
@@ -977,7 +977,7 @@ function StepZohoInspections({
           <button
             onClick={onConnect}
             disabled={!anyEnabled}
-            className="min-w-[80px] rounded bg-[#1771b8] px-4 py-3 text-sm font-semibold text-white hover:bg-[#125e96] disabled:opacity-40"
+            className="min-w-[80px] rounded bg-[#1771b8] px-4 py-3 text-sm font-semibold text-white hover:bg-[#125e96] disabled:bg-[#EBEDEF] disabled:text-[#9AA5B1] disabled:hover:bg-[#EBEDEF]"
           >
             Connect Integration
           </button>
