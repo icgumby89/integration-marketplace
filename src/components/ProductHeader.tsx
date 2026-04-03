@@ -118,7 +118,7 @@ export default function ProductHeader({
           </Link>
           {!isCustom && isConnected && (
             <button
-              className="rounded border border-[#d1d5db] px-4 py-3 text-sm font-semibold text-[#374151] hover:bg-[#f6f9f9]"
+              className="rounded bg-[#1771b8] px-4 py-3 text-sm font-semibold text-white hover:bg-[#125e96]"
             >
               Configure
             </button>

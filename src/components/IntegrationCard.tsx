@@ -70,7 +70,7 @@ export default function IntegrationCard({ integration, isConnected }: Integratio
             </button>
           )}
           {isConnected ? (
-            <button className="min-w-[80px] rounded border border-[#d1d5db] px-3 py-1 text-xs font-semibold text-[#374151] hover:bg-[#f6f9f9]">
+            <button className="min-w-[80px] rounded bg-[#1771b8] px-3 py-1 text-xs font-semibold text-white hover:bg-[#125e96]">
               Configure
             </button>
           ) : (
