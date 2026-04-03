@@ -563,15 +563,18 @@ function ZohoCustomSelect({
 function StepZohoClients({
   integrationName,
   integrationLogo,
+  enabled,
+  onToggle,
   onNext,
   onBack,
 }: {
   integrationName: string;
   integrationLogo: string;
+  enabled: boolean;
+  onToggle: () => void;
   onNext: () => void;
   onBack: () => void;
 }) {
-  const [enabled, setEnabled] = useState(false);
   const [clientModule, setClientModule] = useState("contacts");
   const [clientModuleOpen, setClientModuleOpen] = useState(false);
 
@@ -606,7 +609,7 @@ function StepZohoClients({
           <div className="pt-0.5 shrink-0">
             <button
               type="button"
-              onClick={() => setEnabled(!enabled)}
+              onClick={onToggle}
               className={`flex h-5 w-5 items-center justify-center rounded ${enabled ? "bg-[#1771b8]" : "border border-[#d1d5db] bg-white"}`}
             >
               {enabled && (
@@ -689,15 +692,18 @@ function StepZohoClients({
 function StepZohoAgents({
   integrationName,
   integrationLogo,
+  enabled,
+  onToggle,
   onNext,
   onBack,
 }: {
   integrationName: string;
   integrationLogo: string;
+  enabled: boolean;
+  onToggle: () => void;
   onNext: () => void;
   onBack: () => void;
 }) {
-  const [enabled, setEnabled] = useState(false);
   const [agentModule, setAgentModule] = useState("accounts");
   const [agentModuleOpen, setAgentModuleOpen] = useState(false);
 
@@ -732,7 +738,7 @@ function StepZohoAgents({
           <div className="pt-0.5 shrink-0">
             <button
               type="button"
-              onClick={() => setEnabled(!enabled)}
+              onClick={onToggle}
               className={`flex h-5 w-5 items-center justify-center rounded ${enabled ? "bg-[#1771b8]" : "border border-[#d1d5db] bg-white"}`}
             >
               {enabled && (
@@ -815,15 +821,20 @@ function StepZohoAgents({
 function StepZohoInspections({
   integrationName,
   integrationLogo,
+  enabled,
+  onToggle,
+  anyEnabled,
   onConnect,
   onBack,
 }: {
   integrationName: string;
   integrationLogo: string;
+  enabled: boolean;
+  onToggle: () => void;
+  anyEnabled: boolean;
   onConnect: () => void;
   onBack: () => void;
 }) {
-  const [enabled, setEnabled] = useState(false);
   const [pipeline, setPipeline] = useState("inspection-pipeline");
   const [pipelineOpen, setPipelineOpen] = useState(false);
 
@@ -869,7 +880,7 @@ function StepZohoInspections({
           <div className="pt-0.5 shrink-0">
             <button
               type="button"
-              onClick={() => setEnabled(!enabled)}
+              onClick={onToggle}
               className={`flex h-5 w-5 items-center justify-center rounded ${enabled ? "bg-[#1771b8]" : "border border-[#d1d5db] bg-white"}`}
             >
               {enabled && (
@@ -965,7 +976,8 @@ function StepZohoInspections({
           </button>
           <button
             onClick={onConnect}
-            className="min-w-[80px] rounded bg-[#1771b8] px-4 py-3 text-sm font-semibold text-white hover:bg-[#125e96]"
+            disabled={!anyEnabled}
+            className="min-w-[80px] rounded bg-[#1771b8] px-4 py-3 text-sm font-semibold text-white hover:bg-[#125e96] disabled:opacity-40"
           >
             Connect Integration
           </button>
@@ -983,6 +995,9 @@ export default function ConnectModal({
   onConnect,
 }: ConnectModalProps) {
   const [step, setStep] = useState(1);
+  const [zohoClients, setZohoClients] = useState(false);
+  const [zohoAgents, setZohoAgents] = useState(false);
+  const [zohoInspections, setZohoInspections] = useState(false);
   const isZoho = integrationName === "Zoho CRM";
   const totalSteps = isZoho ? 4 : 2;
 
@@ -1002,6 +1017,8 @@ export default function ConnectModal({
           <StepZohoClients
             integrationName={integrationName}
             integrationLogo={integrationLogo}
+            enabled={zohoClients}
+            onToggle={() => setZohoClients(!zohoClients)}
             onNext={() => setStep(3)}
             onBack={() => setStep(1)}
           />
@@ -1010,6 +1027,8 @@ export default function ConnectModal({
           <StepZohoAgents
             integrationName={integrationName}
             integrationLogo={integrationLogo}
+            enabled={zohoAgents}
+            onToggle={() => setZohoAgents(!zohoAgents)}
             onNext={() => setStep(4)}
             onBack={() => setStep(2)}
           />
@@ -1018,6 +1037,9 @@ export default function ConnectModal({
           <StepZohoInspections
             integrationName={integrationName}
             integrationLogo={integrationLogo}
+            enabled={zohoInspections}
+            onToggle={() => setZohoInspections(!zohoInspections)}
+            anyEnabled={zohoClients || zohoAgents || zohoInspections}
             onConnect={onConnect}
             onBack={() => setStep(3)}
           />
