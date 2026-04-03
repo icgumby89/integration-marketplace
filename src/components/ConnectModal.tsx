@@ -3,7 +3,24 @@
 import { useState } from "react";
 import Image from "next/image";
 
+type IntegrationConfig = {
+  clients: boolean;
+  agents: boolean;
+  inspections: boolean;
+};
+
+function saveConfig(integrationId: string, config: IntegrationConfig) {
+  localStorage.setItem(`integrationConfig-${integrationId}`, JSON.stringify(config));
+}
+
+function loadConfig(integrationId: string): IntegrationConfig {
+  const stored = localStorage.getItem(`integrationConfig-${integrationId}`);
+  if (stored) return JSON.parse(stored);
+  return { clients: false, agents: false, inspections: false };
+}
+
 type ConnectModalProps = {
+  integrationId: string;
   integrationName: string;
   integrationLogo: string;
   onClose: () => void;
@@ -11,6 +28,7 @@ type ConnectModalProps = {
 };
 
 type ConfigureModalProps = {
+  integrationId: string;
   integrationName: string;
   integrationLogo: string;
   onClose: () => void;
@@ -114,7 +132,7 @@ function ConfigureHeader({
       <div className="flex flex-1 items-center justify-end">
         <button
           onClick={onDisconnect}
-          className="rounded border border-[#d1d5db] px-4 py-2 text-sm font-semibold text-[#374151] hover:bg-[#f6f9f9]"
+          className="rounded border border-[#dc2626] px-4 py-2 text-sm font-semibold text-[#dc2626] hover:bg-[#fef2f2]"
         >
           Disconnect
         </button>
@@ -1035,6 +1053,7 @@ function StepZohoInspections({
 
 /* ─── Main Modal ─── */
 export default function ConnectModal({
+  integrationId,
   integrationName,
   integrationLogo,
   onClose,
@@ -1046,6 +1065,11 @@ export default function ConnectModal({
   const [zohoInspections, setZohoInspections] = useState(false);
   const isZoho = integrationName === "Zoho CRM";
   const totalSteps = isZoho ? 4 : 2;
+
+  function handleConnect() {
+    saveConfig(integrationId, { clients: zohoClients, agents: zohoAgents, inspections: zohoInspections });
+    onConnect();
+  }
 
   return (
     <div className="fixed inset-0 z-50 flex flex-col bg-white">
@@ -1086,7 +1110,7 @@ export default function ConnectModal({
             enabled={zohoInspections}
             onToggle={() => setZohoInspections(!zohoInspections)}
             anyEnabled={zohoClients || zohoAgents || zohoInspections}
-            onConnect={onConnect}
+            onConnect={handleConnect}
             onBack={() => setStep(3)}
           />
         )}
@@ -1094,7 +1118,7 @@ export default function ConnectModal({
           <StepConfigure
             integrationName={integrationName}
             integrationLogo={integrationLogo}
-            onConnect={onConnect}
+            onConnect={handleConnect}
             onBack={() => setStep(1)}
           />
         )}
@@ -1105,16 +1129,23 @@ export default function ConnectModal({
 
 /* ─── Configure Modal (post-connection) ─── */
 export function ConfigureModal({
+  integrationId,
   integrationName,
   integrationLogo,
   onClose,
   onDisconnect,
 }: ConfigureModalProps) {
+  const config = loadConfig(integrationId);
   const [step, setStep] = useState(1);
-  const [zohoClients, setZohoClients] = useState(false);
-  const [zohoAgents, setZohoAgents] = useState(false);
-  const [zohoInspections, setZohoInspections] = useState(false);
+  const [zohoClients, setZohoClients] = useState(config.clients);
+  const [zohoAgents, setZohoAgents] = useState(config.agents);
+  const [zohoInspections, setZohoInspections] = useState(config.inspections);
   const isZoho = integrationName === "Zoho CRM";
+
+  function handleSave() {
+    saveConfig(integrationId, { clients: zohoClients, agents: zohoAgents, inspections: zohoInspections });
+    onClose();
+  }
 
   return (
     <div className="fixed inset-0 z-50 flex flex-col bg-white">
@@ -1148,7 +1179,7 @@ export function ConfigureModal({
             enabled={zohoInspections}
             onToggle={() => setZohoInspections(!zohoInspections)}
             anyEnabled={zohoClients || zohoAgents || zohoInspections}
-            onConnect={onClose}
+            onConnect={handleSave}
             onBack={() => setStep(2)}
             submitLabel="Save"
           />
@@ -1157,7 +1188,7 @@ export function ConfigureModal({
           <StepConfigure
             integrationName={integrationName}
             integrationLogo={integrationLogo}
-            onConnect={onClose}
+            onConnect={handleSave}
             onBack={onClose}
             submitLabel="Save"
           />

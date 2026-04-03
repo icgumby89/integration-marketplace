@@ -146,6 +146,7 @@ export default function ProductHeader({
 
       {showModal && (
         <ConnectModal
+          integrationId={id}
           integrationName={name}
           integrationLogo={logoImage}
           onClose={() => setShowModal(false)}
@@ -155,6 +156,7 @@ export default function ProductHeader({
 
       {showConfigureModal && (
         <ConfigureModal
+          integrationId={id}
           integrationName={name}
           integrationLogo={logoImage}
           onClose={() => setShowConfigureModal(false)}
