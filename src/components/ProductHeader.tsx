@@ -3,7 +3,7 @@
 import { useState, useEffect } from "react";
 import Image from "next/image";
 import Link from "next/link";
-import ConnectModal from "@/components/ConnectModal";
+import ConnectModal, { ConfigureModal } from "@/components/ConnectModal";
 
 type ProductHeaderProps = {
   id: string;
@@ -24,6 +24,7 @@ export default function ProductHeader({
 }: ProductHeaderProps) {
   const [isConnected, setIsConnected] = useState(false);
   const [showModal, setShowModal] = useState(false);
+  const [showConfigureModal, setShowConfigureModal] = useState(false);
 
   useEffect(() => {
     const connected = JSON.parse(localStorage.getItem("connectedIntegrations") || "[]");
@@ -36,6 +37,14 @@ export default function ProductHeader({
       return;
     }
     completeConnect();
+  }
+
+  function handleDisconnect() {
+    const connected = JSON.parse(localStorage.getItem("connectedIntegrations") || "[]");
+    const updated = connected.filter((cid: string) => cid !== id);
+    localStorage.setItem("connectedIntegrations", JSON.stringify(updated));
+    setIsConnected(false);
+    setShowConfigureModal(false);
   }
 
   function completeConnect() {
@@ -118,6 +127,7 @@ export default function ProductHeader({
           </Link>
           {!isCustom && isConnected && (
             <button
+              onClick={() => setShowConfigureModal(true)}
               className="rounded bg-[#1771b8] px-4 py-3 text-sm font-semibold text-white hover:bg-[#125e96]"
             >
               Configure
@@ -140,6 +150,15 @@ export default function ProductHeader({
           integrationLogo={logoImage}
           onClose={() => setShowModal(false)}
           onConnect={completeConnect}
+        />
+      )}
+
+      {showConfigureModal && (
+        <ConfigureModal
+          integrationName={name}
+          integrationLogo={logoImage}
+          onClose={() => setShowConfigureModal(false)}
+          onDisconnect={handleDisconnect}
         />
       )}
     </section>

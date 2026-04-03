@@ -10,6 +10,13 @@ type ConnectModalProps = {
   onConnect: () => void;
 };
 
+type ConfigureModalProps = {
+  integrationName: string;
+  integrationLogo: string;
+  onClose: () => void;
+  onDisconnect: () => void;
+};
+
 function SpectoraLogo() {
   return (
     <svg width="36" height="36" viewBox="0 0 36 36" fill="none">
@@ -76,6 +83,41 @@ function ModalHeader({
             style={{ width: `${(step / totalSteps) * 100}%` }}
           />
         </div>
+      </div>
+    </div>
+  );
+}
+
+function ConfigureHeader({
+  integrationName,
+  onClose,
+  onDisconnect,
+}: {
+  integrationName: string;
+  onClose: () => void;
+  onDisconnect: () => void;
+}) {
+  return (
+    <div className="flex items-center justify-between border-b border-[#d1d5db] px-6 py-5">
+      <div className="flex flex-1 items-center">
+        <button onClick={onClose} className="text-[#374151] hover:text-[#212731]">
+          <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+            <path d="M18 6L6 18M6 6l12 12" />
+          </svg>
+        </button>
+      </div>
+      <div className="flex flex-1 justify-center">
+        <p className="text-base font-bold text-[#212731]">
+          {integrationName} Integration
+        </p>
+      </div>
+      <div className="flex flex-1 items-center justify-end">
+        <button
+          onClick={onDisconnect}
+          className="rounded border border-[#d1d5db] px-4 py-2 text-sm font-semibold text-[#374151] hover:bg-[#f6f9f9]"
+        >
+          Disconnect
+        </button>
       </div>
     </div>
   );
@@ -267,11 +309,13 @@ function StepConfigure({
   integrationLogo,
   onConnect,
   onBack,
+  submitLabel = "Connect Integration",
 }: {
   integrationName: string;
   integrationLogo: string;
   onConnect: () => void;
   onBack: () => void;
+  submitLabel?: string;
 }) {
   const [audience, setAudience] = useState("main-audience");
   const [audienceOpen, setAudienceOpen] = useState(false);
@@ -493,7 +537,7 @@ function StepConfigure({
             disabled={!syncClients && !syncAgents}
             className="min-w-[80px] rounded bg-[#1771b8] px-4 py-3 text-sm font-semibold text-white hover:bg-[#125e96] disabled:bg-[#EBEDEF] disabled:text-[#9AA5B1] disabled:hover:bg-[#EBEDEF]"
           >
-            Connect Integration
+            {submitLabel}
           </button>
         </div>
       </div>
@@ -826,6 +870,7 @@ function StepZohoInspections({
   anyEnabled,
   onConnect,
   onBack,
+  submitLabel = "Connect Integration",
 }: {
   integrationName: string;
   integrationLogo: string;
@@ -834,6 +879,7 @@ function StepZohoInspections({
   anyEnabled: boolean;
   onConnect: () => void;
   onBack: () => void;
+  submitLabel?: string;
 }) {
   const [pipeline, setPipeline] = useState("inspection-pipeline");
   const [pipelineOpen, setPipelineOpen] = useState(false);
@@ -979,7 +1025,7 @@ function StepZohoInspections({
             disabled={!anyEnabled}
             className="min-w-[80px] rounded bg-[#1771b8] px-4 py-3 text-sm font-semibold text-white hover:bg-[#125e96] disabled:bg-[#EBEDEF] disabled:text-[#9AA5B1] disabled:hover:bg-[#EBEDEF]"
           >
-            Connect Integration
+            {submitLabel}
           </button>
         </div>
       </div>
@@ -1050,6 +1096,70 @@ export default function ConnectModal({
             integrationLogo={integrationLogo}
             onConnect={onConnect}
             onBack={() => setStep(1)}
+          />
+        )}
+      </div>
+    </div>
+  );
+}
+
+/* ─── Configure Modal (post-connection) ─── */
+export function ConfigureModal({
+  integrationName,
+  integrationLogo,
+  onClose,
+  onDisconnect,
+}: ConfigureModalProps) {
+  const [step, setStep] = useState(1);
+  const [zohoClients, setZohoClients] = useState(false);
+  const [zohoAgents, setZohoAgents] = useState(false);
+  const [zohoInspections, setZohoInspections] = useState(false);
+  const isZoho = integrationName === "Zoho CRM";
+
+  return (
+    <div className="fixed inset-0 z-50 flex flex-col bg-white">
+      <ConfigureHeader integrationName={integrationName} onClose={onClose} onDisconnect={onDisconnect} />
+
+      <div className="flex flex-1 flex-col items-center overflow-y-auto p-16">
+        {step === 1 && isZoho && (
+          <StepZohoClients
+            integrationName={integrationName}
+            integrationLogo={integrationLogo}
+            enabled={zohoClients}
+            onToggle={() => setZohoClients(!zohoClients)}
+            onNext={() => setStep(2)}
+            onBack={onClose}
+          />
+        )}
+        {step === 2 && isZoho && (
+          <StepZohoAgents
+            integrationName={integrationName}
+            integrationLogo={integrationLogo}
+            enabled={zohoAgents}
+            onToggle={() => setZohoAgents(!zohoAgents)}
+            onNext={() => setStep(3)}
+            onBack={() => setStep(1)}
+          />
+        )}
+        {step === 3 && isZoho && (
+          <StepZohoInspections
+            integrationName={integrationName}
+            integrationLogo={integrationLogo}
+            enabled={zohoInspections}
+            onToggle={() => setZohoInspections(!zohoInspections)}
+            anyEnabled={zohoClients || zohoAgents || zohoInspections}
+            onConnect={onClose}
+            onBack={() => setStep(2)}
+            submitLabel="Save"
+          />
+        )}
+        {step === 1 && !isZoho && (
+          <StepConfigure
+            integrationName={integrationName}
+            integrationLogo={integrationLogo}
+            onConnect={onClose}
+            onBack={onClose}
+            submitLabel="Save"
           />
         )}
       </div>
