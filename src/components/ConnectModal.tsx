@@ -520,9 +520,6 @@ function StepConfigureZoho({
   const [agentModuleOpen, setAgentModuleOpen] = useState(false);
   const [pipeline, setPipeline] = useState("inspection-pipeline");
   const [pipelineOpen, setPipelineOpen] = useState(false);
-  const [createDeals, setCreateDeals] = useState(true);
-  const [syncPayments, setSyncPayments] = useState(true);
-  const [syncActivities, setSyncActivities] = useState(true);
 
   const clientModules = [
     { id: "contacts", name: "Contacts" },
@@ -775,63 +772,6 @@ function StepConfigureZoho({
             </div>
           </>
         )}
-
-        <div className="border-t border-[#d1d5db]" />
-
-        {/* Automation toggles */}
-        <div className="flex flex-col gap-5">
-          <div className="flex flex-col gap-1">
-            <label className="text-sm font-semibold text-[#212731]">Automation</label>
-            <p className="text-xs leading-5 text-[#647382]">
-              Configure what happens automatically when data changes in Spectora.
-            </p>
-          </div>
-
-          <div className="flex items-center justify-between">
-            <div>
-              <p className="text-sm font-semibold text-[#212731]">Create Deals for new inspections</p>
-              <p className="text-xs text-[#647382]">
-                Automatically create a Deal when a new inspection is booked in Spectora
-              </p>
-            </div>
-            <button
-              onClick={() => setCreateDeals(!createDeals)}
-              className={`relative h-6 w-11 shrink-0 rounded-full transition-colors ${createDeals ? "bg-[#1771b8]" : "bg-[#d1d5db]"}`}
-            >
-              <span className={`absolute top-0.5 h-5 w-5 rounded-full bg-white shadow transition-transform ${createDeals ? "left-[22px]" : "left-0.5"}`} />
-            </button>
-          </div>
-
-          <div className="flex items-center justify-between">
-            <div>
-              <p className="text-sm font-semibold text-[#212731]">Sync payment status</p>
-              <p className="text-xs text-[#647382]">
-                Update Deal amount and payment status when payments are recorded
-              </p>
-            </div>
-            <button
-              onClick={() => setSyncPayments(!syncPayments)}
-              className={`relative h-6 w-11 shrink-0 rounded-full transition-colors ${syncPayments ? "bg-[#1771b8]" : "bg-[#d1d5db]"}`}
-            >
-              <span className={`absolute top-0.5 h-5 w-5 rounded-full bg-white shadow transition-transform ${syncPayments ? "left-[22px]" : "left-0.5"}`} />
-            </button>
-          </div>
-
-          <div className="flex items-center justify-between">
-            <div>
-              <p className="text-sm font-semibold text-[#212731]">Create calendar activities</p>
-              <p className="text-xs text-[#647382]">
-                Add CRM Events for scheduled inspections and Tasks for follow-ups
-              </p>
-            </div>
-            <button
-              onClick={() => setSyncActivities(!syncActivities)}
-              className={`relative h-6 w-11 shrink-0 rounded-full transition-colors ${syncActivities ? "bg-[#1771b8]" : "bg-[#d1d5db]"}`}
-            >
-              <span className={`absolute top-0.5 h-5 w-5 rounded-full bg-white shadow transition-transform ${syncActivities ? "left-[22px]" : "left-0.5"}`} />
-            </button>
-          </div>
-        </div>
 
         <div className="border-t border-[#d1d5db]" />
 
