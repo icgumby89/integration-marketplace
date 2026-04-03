@@ -67,11 +67,11 @@ function ModalHeader({
       </div>
       <div className="flex flex-1 items-center justify-end gap-3">
         <span className="text-xs font-medium text-[#647382]">Steps</span>
-        <span className="text-xs font-medium text-[#1771b8]">{step}/3</span>
+        <span className="text-xs font-medium text-[#1771b8]">{step}/2</span>
         <div className="h-1 w-[120px] bg-[#e4f1fc]">
           <div
             className="h-full bg-[#1771b8] transition-all duration-300"
-            style={{ width: `${(step / 3) * 100}%` }}
+            style={{ width: `${(step / 2) * 100}%` }}
           />
         </div>
       </div>
@@ -908,28 +908,20 @@ export default function ConnectModal({
             onNext={() => setStep(2)}
           />
         )}
-        {step === 2 && (
-          <StepApiKey
-            integrationName={integrationName}
-            integrationLogo={integrationLogo}
-            onNext={() => setStep(3)}
-            onClose={onClose}
-          />
-        )}
-        {step === 3 && isZoho && (
+        {step === 2 && isZoho && (
           <StepConfigureZoho
             integrationName={integrationName}
             integrationLogo={integrationLogo}
             onConnect={onConnect}
-            onBack={() => setStep(2)}
+            onBack={() => setStep(1)}
           />
         )}
-        {step === 3 && !isZoho && (
+        {step === 2 && !isZoho && (
           <StepConfigure
             integrationName={integrationName}
             integrationLogo={integrationLogo}
             onConnect={onConnect}
-            onBack={() => setStep(2)}
+            onBack={() => setStep(1)}
           />
         )}
       </div>
