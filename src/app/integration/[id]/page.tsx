@@ -337,7 +337,7 @@ export default async function IntegrationDetailPage({ params }: Props) {
 
           {/* Permissions content */}
           <div className="flex flex-1 flex-col gap-5">
-            <p className="text-sm font-semibold text-[#647382]">Permissions</p>
+            <p className="text-sm font-semibold text-[#647382]">Data Access</p>
 
             <div className="overflow-hidden rounded-lg border border-[#d1d5db] bg-[#f6f9f9]">
               {detail.permissions.map((permission, i) => (
