@@ -481,19 +481,19 @@ function StepConfigure({
         </div>
 
         {/* Actions */}
-        <div className="flex items-center gap-5">
+        <div className="flex items-center justify-between">
+          <button
+            onClick={onBack}
+            className="min-w-[80px] rounded border border-[#d1d5db] px-4 py-3 text-sm font-semibold text-[#374151] hover:bg-[#f6f9f9]"
+          >
+            Back
+          </button>
           <button
             onClick={onConnect}
             disabled={!syncClients && !syncAgents}
             className="min-w-[80px] rounded bg-[#1771b8] px-4 py-3 text-sm font-semibold text-white hover:bg-[#125e96] disabled:opacity-40"
           >
             Connect Integration
-          </button>
-          <button
-            onClick={onBack}
-            className="px-4 py-3 text-sm font-semibold text-[#1771b8] hover:underline"
-          >
-            Back
           </button>
         </div>
       </div>
@@ -666,24 +666,18 @@ function StepZohoClients({
         </div>
 
         {/* Actions */}
-        <div className="flex items-center gap-5">
+        <div className="flex items-center justify-between">
+          <button
+            onClick={onBack}
+            className="min-w-[80px] rounded border border-[#d1d5db] px-4 py-3 text-sm font-semibold text-[#374151] hover:bg-[#f6f9f9]"
+          >
+            Back
+          </button>
           <button
             onClick={onNext}
             className="min-w-[80px] rounded bg-[#1771b8] px-4 py-3 text-sm font-semibold text-white hover:bg-[#125e96]"
           >
             Next
-          </button>
-          <button
-            onClick={onNext}
-            className="px-4 py-3 text-sm font-semibold text-[#647382] hover:underline"
-          >
-            Skip
-          </button>
-          <button
-            onClick={onBack}
-            className="px-4 py-3 text-sm font-semibold text-[#1771b8] hover:underline"
-          >
-            Back
           </button>
         </div>
       </div>
@@ -798,24 +792,18 @@ function StepZohoAgents({
         </div>
 
         {/* Actions */}
-        <div className="flex items-center gap-5">
+        <div className="flex items-center justify-between">
+          <button
+            onClick={onBack}
+            className="min-w-[80px] rounded border border-[#d1d5db] px-4 py-3 text-sm font-semibold text-[#374151] hover:bg-[#f6f9f9]"
+          >
+            Back
+          </button>
           <button
             onClick={onNext}
             className="min-w-[80px] rounded bg-[#1771b8] px-4 py-3 text-sm font-semibold text-white hover:bg-[#125e96]"
           >
             Next
-          </button>
-          <button
-            onClick={onNext}
-            className="px-4 py-3 text-sm font-semibold text-[#647382] hover:underline"
-          >
-            Skip
-          </button>
-          <button
-            onClick={onBack}
-            className="px-4 py-3 text-sm font-semibold text-[#1771b8] hover:underline"
-          >
-            Back
           </button>
         </div>
       </div>
@@ -968,18 +956,18 @@ function StepZohoInspections({
         </div>
 
         {/* Actions */}
-        <div className="flex items-center gap-5">
+        <div className="flex items-center justify-between">
+          <button
+            onClick={onBack}
+            className="min-w-[80px] rounded border border-[#d1d5db] px-4 py-3 text-sm font-semibold text-[#374151] hover:bg-[#f6f9f9]"
+          >
+            Back
+          </button>
           <button
             onClick={onConnect}
             className="min-w-[80px] rounded bg-[#1771b8] px-4 py-3 text-sm font-semibold text-white hover:bg-[#125e96]"
           >
             Connect Integration
-          </button>
-          <button
-            onClick={onBack}
-            className="px-4 py-3 text-sm font-semibold text-[#1771b8] hover:underline"
-          >
-            Back
           </button>
         </div>
       </div>
