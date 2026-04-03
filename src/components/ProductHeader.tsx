@@ -116,6 +116,13 @@ export default function ProductHeader({
               ? "Return to Custom Integrations"
               : "Return to Integrations"}
           </Link>
+          {!isCustom && isConnected && (
+            <button
+              className="rounded border border-[#d1d5db] px-4 py-3 text-sm font-semibold text-[#374151] hover:bg-[#f6f9f9]"
+            >
+              Configure
+            </button>
+          )}
           {!isCustom && !isConnected && (
             <button
               onClick={handleConnect}
