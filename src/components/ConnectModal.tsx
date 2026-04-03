@@ -911,7 +911,7 @@ function StepZohoInspections({
 
         {/* Stage mapping */}
         <div className={`flex flex-col gap-2 ${!enabled ? "opacity-40" : ""}`}>
-          <label className="text-sm font-semibold text-[#212731]">Deal stage mapping</label>
+          <label className="text-sm font-semibold text-[#212731]">Inspection status mapping</label>
           <p className="text-xs leading-5 text-[#647382]">
             Inspection statuses in Spectora map to these Deal stages in {integrationName}.
           </p>
