@@ -5,6 +5,65 @@ import Image from "next/image";
 import Link from "next/link";
 import ConnectModal, { ConfigureModal } from "@/components/ConnectModal";
 
+function ConnectConfirmModal({
+  onContinue,
+  onClose,
+}: {
+  onContinue: () => void;
+  onClose: () => void;
+}) {
+  return (
+    <div className="fixed inset-0 z-50 flex items-center justify-center">
+      {/* Scrim */}
+      <div
+        className="absolute inset-0 bg-[#212731] opacity-20"
+        onClick={onClose}
+      />
+      {/* Modal */}
+      <div className="relative w-[392px] rounded-lg bg-white px-6 py-8 shadow-[0px_12px_16px_-4px_rgba(55,65,81,0.08),0px_4px_6px_-2px_rgba(55,65,81,0.03)]">
+        {/* Close button */}
+        <button
+          onClick={onClose}
+          className="absolute right-2 top-2 flex items-center justify-center rounded p-1 text-[#647382] hover:text-[#374151]"
+        >
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+            <path d="M18 6L6 18M6 6l12 12" />
+          </svg>
+        </button>
+
+        <div className="flex flex-col items-center text-center">
+          {/* Warning icon */}
+          <div className="flex h-11 w-11 items-center justify-center rounded-full bg-[#fef7f1]">
+            <svg width="20" height="20" viewBox="0 0 20 20" fill="none">
+              <circle cx="10" cy="10" r="9" stroke="#cb6e15" strokeWidth="2" />
+              <path d="M10 6v5" stroke="#cb6e15" strokeWidth="2" strokeLinecap="round" />
+              <circle cx="10" cy="14" r="1" fill="#cb6e15" />
+            </svg>
+          </div>
+
+          {/* Content */}
+          <div className="pb-7 pt-5">
+            <p className="text-base font-bold leading-[1.4] text-[#374151]">
+              [Permission] not activated
+            </p>
+            <p className="mt-2 text-sm leading-6 text-[#647382]">
+              This integration requires permissions to access your account data. By continuing, you authorize Spectora to connect with this service and sync your information.
+            </p>
+          </div>
+
+          {/* Continue button */}
+          <button
+            onClick={onContinue}
+            className="w-full max-w-[240px] rounded bg-[#1771b8] px-4 py-3 text-sm font-semibold text-white hover:bg-[#125e96]"
+          >
+            Continue
+          </button>
+        </div>
+      </div>
+    </div>
+  );
+}
+
 type ProductHeaderProps = {
   id: string;
   name: string;
@@ -23,6 +82,7 @@ export default function ProductHeader({
   isCustom,
 }: ProductHeaderProps) {
   const [isConnected, setIsConnected] = useState(false);
+  const [showConfirm, setShowConfirm] = useState(false);
   const [showModal, setShowModal] = useState(false);
   const [showConfigureModal, setShowConfigureModal] = useState(false);
 
@@ -32,7 +92,11 @@ export default function ProductHeader({
   }, [id]);
 
   function handleConnect() {
-    if (id === "mailchimp" || id === "zoho-crm") {
+    if (id === "mailchimp") {
+      setShowConfirm(true);
+      return;
+    }
+    if (id === "zoho-crm") {
       setShowModal(true);
       return;
     }
@@ -143,6 +207,16 @@ export default function ProductHeader({
           )}
         </div>
       </div>
+
+      {showConfirm && (
+        <ConnectConfirmModal
+          onClose={() => setShowConfirm(false)}
+          onContinue={() => {
+            setShowConfirm(false);
+            setShowModal(true);
+          }}
+        />
+      )}
 
       {showModal && (
         <ConnectModal
