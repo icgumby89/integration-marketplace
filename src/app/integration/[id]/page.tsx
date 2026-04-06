@@ -370,13 +370,18 @@ export default async function IntegrationDetailPage({ params }: Props) {
                   </svg>
                 </button>
               ))}
-              <div className="flex items-center gap-2.5 px-7 py-3">
-                <span className="text-sm text-[#212731]">
-                  What do these permissions allow?
-                </span>
-                <button className="text-sm font-semibold text-[#1771b8] underline hover:text-[#125e96]">
-                  Learn more
-                </button>
+              <div className="flex items-start gap-1.5 px-7 py-3">
+                <svg width="20" height="20" viewBox="0 0 20 20" fill="none" className="mt-0.5 shrink-0">
+                  <circle cx="10" cy="10" r="7" stroke="#374151" strokeWidth="1.5" />
+                  <path d="M10 7v3.5" stroke="#374151" strokeWidth="1.5" strokeLinecap="round" />
+                  <circle cx="10" cy="13.5" r="0.75" fill="#374151" />
+                </svg>
+                <p className="text-sm leading-6 text-[#212731]">
+                  If your account is removed, all integrations you&apos;ve set up will be automatically disconnected. Data will stop syncing between Spectora and your connected services. Learn more about integration management.{" "}
+                  <button className="font-semibold text-[#1771b8] underline hover:text-[#125e96]">
+                    Learn more
+                  </button>
+                </p>
               </div>
             </div>
           </div>

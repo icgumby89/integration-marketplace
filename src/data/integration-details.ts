@@ -78,12 +78,12 @@ export const integrationDetails: Record<string, IntegrationDetail> = {
     about:
       "Mailchimp is an all-in-one marketing platform that helps businesses grow their audience and build customer relationships. The platform specializes in email marketing, enabling companies to create, send, and analyze professional campaigns using intuitive tools and customizable templates. Mailchimp offers marketing automation that triggers personalized messages based on customer behavior and preferences. Beyond email, users can create landing pages, digital ads, and social media content all within the same platform.\n\nThe company provides detailed analytics to track campaign performance, open rates, and ROI. With integrations to hundreds of business tools and scalable pricing, Mailchimp serves millions of customers worldwide, from small businesses to large enterprises.",
     permissions: [
-      "Access contact lists and subscriber data",
-      "Create and send email campaigns",
-      "View campaign performance and analytics",
-      "Manage audience segments and tags",
-      "Sync customer information automatically",
-      "Create automated marketing workflows",
+      "Access contact and account information",
+      "Log activities and track interactions",
+      "Read and update opportunity data",
+      "Sync lead and customer records",
+      "View sales pipeline and forecasts",
+      "Access communication history",
     ],
   },
   "contact-sync": {
@@ -204,12 +204,12 @@ export const integrationDetails: Record<string, IntegrationDetail> = {
     about:
       "Contact Sync is a custom integration template that enables automatic synchronization of your Spectora contacts with external platforms and services. Built to save time and reduce manual data entry, Contact Sync uses webhooks and the Spectora Public API to keep your customer information consistent across all the tools you use.\n\nWhether you need to sync contacts with your CRM, email marketing platform, accounting software, or any other service, Contact Sync provides a flexible foundation that can be customized to fit your specific workflow requirements.",
     permissions: [
-      "Access contact lists and subscriber data",
-      "Create and send email campaigns",
-      "View campaign performance and analytics",
-      "Manage audience segments and tags",
-      "Sync customer information automatically",
-      "Create automated marketing workflows",
+      "Access contact and account information",
+      "Log activities and track interactions",
+      "Read and update opportunity data",
+      "Sync lead and customer records",
+      "View sales pipeline and forecasts",
+      "Access communication history",
     ],
   },
   salesforce: {
