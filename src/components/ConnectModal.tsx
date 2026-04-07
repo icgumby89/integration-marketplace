@@ -646,10 +646,16 @@ function StepZohoClients({
   ];
 
   const fieldMappings = [
-    { spectora: "Client Name", zoho: "First_Name / Last_Name", required: true },
-    { spectora: "Client Email", zoho: "Email", required: true },
-    { spectora: "Client Phone", zoho: "Phone", required: false },
-    { spectora: "Property Address", zoho: "Mailing_Street, City, State, Zip", required: false },
+    { spectora: "Contact ID", zoho: "Contact_ID", required: true },
+    { spectora: "First and Last Name", zoho: "First_Name / Last_Name", required: true },
+    { spectora: "Tags", zoho: "Tags", required: false },
+    { spectora: "Phone", zoho: "Phone", required: false },
+    { spectora: "Mobile Phone", zoho: "Mobile", required: false },
+    { spectora: "Home Phone", zoho: "Home_Phone", required: false },
+    { spectora: "Email", zoho: "Email", required: true },
+    { spectora: "CC Email", zoho: "Secondary_Email", required: false },
+    { spectora: "Private Notes", zoho: "Private_Notes", required: false },
+    { spectora: "Notes", zoho: "Description", required: false },
   ];
 
   return (
@@ -775,10 +781,24 @@ function StepZohoAgents({
   ];
 
   const fieldMappings = [
-    { spectora: "Agent Name", zoho: "First_Name / Last_Name", required: true },
-    { spectora: "Agent Email", zoho: "Email", required: true },
-    { spectora: "Agent Phone", zoho: "Phone", required: false },
-    { spectora: "Brokerage", zoho: "Account_Name", required: false },
+    { spectora: "Connection ID", zoho: "Connection_ID", required: true },
+    { spectora: "First and Last Name", zoho: "First_Name / Last_Name", required: true },
+    { spectora: "Tags", zoho: "Tags", required: false },
+    { spectora: "Phone", zoho: "Phone", required: false },
+    { spectora: "Second Phone", zoho: "Other_Phone", required: false },
+    { spectora: "Email", zoho: "Email", required: true },
+    { spectora: "CC Email", zoho: "Secondary_Email", required: false },
+    { spectora: "Agency", zoho: "Account_Name", required: false },
+    { spectora: "Agency Phone", zoho: "Agency_Phone", required: false },
+    { spectora: "Private Notes", zoho: "Private_Notes", required: false },
+    { spectora: "Notes", zoho: "Description", required: false },
+    { spectora: "Website", zoho: "Website", required: false },
+    { spectora: "Buying Agent Inspections", zoho: "Buying_Inspections", required: false },
+    { spectora: "Selling Agent Inspections", zoho: "Selling_Inspections", required: false },
+    { spectora: "Buying Agent Quote (revenue)", zoho: "Buying_Revenue", required: false },
+    { spectora: "Selling Agent Quote (revenue)", zoho: "Selling_Revenue", required: false },
+    { spectora: "Date of Last Inspection", zoho: "Last_Inspection_Date", required: false },
+    { spectora: "Date of First Inspection", zoho: "First_Inspection_Date", required: false },
   ];
 
   return (
@@ -918,11 +938,24 @@ function StepZohoInspections({
   ];
 
   const fieldMappings = [
-    { spectora: "Inspection Fee", zoho: "Deal → Amount", required: true },
-    { spectora: "Services", zoho: "Deal → Inspection_Services", required: false },
-    { spectora: "Inspector Name", zoho: "Deal → Assigned_Inspector", required: false },
-    { spectora: "Report URL", zoho: "Deal → Report_URL", required: false },
-    { spectora: "Payment Status", zoho: "Deal → Payment_Status", required: false },
+    { spectora: "Inspection ID", zoho: "Inspection_ID", required: true },
+    { spectora: "Inspection URL", zoho: "Inspection_URL", required: false },
+    { spectora: "Order ID", zoho: "Order_ID", required: false },
+    { spectora: "Scheduled For", zoho: "Scheduled_Date", required: false },
+    { spectora: "Paid Status", zoho: "Paid_Status", required: false },
+    { spectora: "Confirmed Status", zoho: "Confirmed_Status", required: false },
+    { spectora: "Client Name", zoho: "Client_Name", required: false },
+    { spectora: "Client ID (Contact ID)", zoho: "Client_ID", required: false },
+    { spectora: "Buying Agent Name", zoho: "Buying_Agent_Name", required: false },
+    { spectora: "Buying Agent ID (Connection ID)", zoho: "Buying_Agent_ID", required: false },
+    { spectora: "Selling Agent Name", zoho: "Selling_Agent_Name", required: false },
+    { spectora: "Selling Agent ID (Connection ID)", zoho: "Selling_Agent_ID", required: false },
+    { spectora: "Property Address", zoho: "Property_Address", required: false },
+    { spectora: "Price (Quote)", zoho: "Deal → Amount", required: false },
+    { spectora: "Discount Code", zoho: "Discount_Code", required: false },
+    { spectora: "Referral Source", zoho: "Referral_Source", required: false },
+    { spectora: "Inspector", zoho: "Assigned_Inspector", required: false },
+    { spectora: "Notes", zoho: "Description", required: false },
   ];
 
   return (
