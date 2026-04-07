@@ -90,7 +90,7 @@ export default async function IntegrationDetailPage({ params }: Props) {
             </div>
             <div className="flex flex-col gap-2 py-0.5 text-sm">
               <p className="font-semibold text-[#212731]">Account type</p>
-              <p className="leading-6 text-[#647382]">Base</p>
+              <p className="leading-6 text-[#647382]">{detail.accountType || "Base"}</p>
             </div>
             <div className="flex flex-col gap-2 py-0.5 text-sm">
               <p className="font-semibold text-[#212731]">Support</p>

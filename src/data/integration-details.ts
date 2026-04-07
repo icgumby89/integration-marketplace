@@ -33,6 +33,7 @@ export type IntegrationDetail = {
   }[];
   about: string;
   permissions: string[];
+  accountType?: string;
 };
 
 export const integrationDetails: Record<string, IntegrationDetail> = {
@@ -303,5 +304,6 @@ export const integrationDetails: Record<string, IntegrationDetail> = {
       "View sales pipeline and forecasts",
       "Access communication history",
     ],
+    accountType: "Advanced",
   },
 };
